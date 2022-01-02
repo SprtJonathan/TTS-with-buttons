@@ -1,0 +1,22 @@
+html {
+  width: 100vw;
+}
+
+body {
+  width: 100vw;
+}
+
+main {
+  width: 90vw;
+  margin: auto;
+}
+
+.background {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+  filter: blur(1px);
+}
