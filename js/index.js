@@ -8,7 +8,7 @@ let addWordButton = document.getElementById("add-word-button");
 let wordsSection = document.getElementById("words-section");
 
 const dataLocation = "http://127.0.0.1:3000/api/hybridus";
-let jsonContent = JSON.stringify();
+const soundsLocation = "~/../sounds/hybridus/";
 
 //addWordButton.addEventListener("click", addWord(addWordInput.value));
 
@@ -34,13 +34,27 @@ function normalizeString(string) {
     .replace(/[\u0300-\u036f]/g, "");
 }
 
-function addToSentence(value, filename) {
-  console.log(value);
-  sentence.push({ value: normalizeString(value), filename: filename });
+function updateSentenceDisplay() {
   sentenceElement.textContent = [];
   for (i = 0; i < sentence.length; i++) {
     sentenceElement.textContent += sentence[i].value + " ";
   }
+}
+
+function addToSentence(value, filename) {
+  console.log(sentence.length);
+  sentence.push({ value: normalizeString(value), filename: filename });
+  updateSentenceDisplay();
+}
+
+function removeWord() {
+  sentence.pop();
+  updateSentenceDisplay();
+}
+
+function removeSentence() {
+  sentence = [];
+  updateSentenceDisplay();
 }
 
 // Récupération des données des recettes
@@ -48,7 +62,7 @@ function fetchData() {
   fetch(dataLocation)
     .then((response) => response.json())
     .then(function getWords(data) {
-      console.log(data.words);
+      console.log(data);
       for (const word of data) {
         if (word.includes(".wav")) {
           let splittedWord = word.replace(".wav", "");
@@ -61,4 +75,26 @@ function fetchData() {
       }
       console.log("test");
     });
+}
+
+function playAudio(phrase) {
+  for (i = 0; i < phrase.length; i++) {
+    console.log("playing " + phrase[i].filename);
+    let sound = new Audio(soundsLocation + phrase[i].filename);
+
+    let soundDuration;
+    sound.addEventListener("loadeddata", function () {
+      soundDuration = this.duration;
+      console.log("Audio duration: " + this.duration);
+      sound.play();
+      wait(soundDuration)
+      task(soundDuration);
+    });
+  }
+
+  function task(i) {
+    setTimeout(function () {
+      // Add tasks to do
+    }, 200 * i);
+  }
 }

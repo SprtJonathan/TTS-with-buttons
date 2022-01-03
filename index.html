@@ -26,9 +26,33 @@
     </header>
     <main>
       <div class="sentence--block">
-        <button class="button btn btn-light sentence--button" onclick="playAudio(sentence)">Lire</button>
+        <button
+          class="button btn btn-light sentence--button"
+          onclick="playAudio(sentence)"
+        >
+          Lire
+        </button>
         <p id="sentence" class="sentence--text"></p>
-        <button class="button btn btn-light sentence--button" onclick="stopAudio()">STOP</button>
+        <div>
+          <button
+            class="button btn btn-light sentence--button"
+            onclick="removeWord()"
+          >
+            Supprimer
+          </button>
+          <button
+            class="button btn btn-light sentence--button"
+            onclick="removeSentence()"
+          >
+            X
+          </button>
+          <button
+            class="button btn btn-light sentence--button"
+            onclick="stopAudio()"
+          >
+            STOP
+          </button>
+        </div>
       </div>
       <div class="search--searchbar--block">
         <input type="text" id="add-word-input" class="search--searchbar" />
