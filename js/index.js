@@ -7,7 +7,7 @@ let addWordButton = document.getElementById("add-word-button");
 
 let wordsSection = document.getElementById("words-section");
 
-const dataLocation = "../public/data/words-list.json";
+const dataLocation = "http://127.0.0.1:3000/api/hybridus";
 let jsonContent = JSON.stringify();
 
 //addWordButton.addEventListener("click", addWord(addWordInput.value));
@@ -21,8 +21,8 @@ fetchData();
   writeFile(dataLocation, JSON.stringify(words));
 }*/
 
-function createWordButton(value) {
-  const htmlCode = `<button onclick="addToSentence('${value}')" class="words--word">${value}</button>`;
+function createWordButton(value, filename) {
+  const htmlCode = `<button onclick="addToSentence('${value}', '${filename}')" class="words--word">${value}</button>`;
 
   return htmlCode;
 }
@@ -34,12 +34,12 @@ function normalizeString(string) {
     .replace(/[\u0300-\u036f]/g, "");
 }
 
-function addToSentence(value) {
+function addToSentence(value, filename) {
   console.log(value);
-  sentence.push(normalizeString(value));
+  sentence.push({ value: normalizeString(value), filename: filename });
   sentenceElement.textContent = [];
   for (i = 0; i < sentence.length; i++) {
-    sentenceElement.textContent += sentence[i] + " ";
+    sentenceElement.textContent += sentence[i].value + " ";
   }
 }
 
@@ -49,8 +49,15 @@ function fetchData() {
     .then((response) => response.json())
     .then(function getWords(data) {
       console.log(data.words);
-      for (const word of data.words) {
-        wordsSection.innerHTML += createWordButton(word);
+      for (const word of data) {
+        if (word.includes(".wav")) {
+          let splittedWord = word.replace(".wav", "");
+          splittedWord = splittedWord.replace(
+            splittedWord[0],
+            splittedWord[0].toUpperCase()
+          );
+          wordsSection.innerHTML += createWordButton(splittedWord, word);
+        }
       }
       console.log("test");
     });

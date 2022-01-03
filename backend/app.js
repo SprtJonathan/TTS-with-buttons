@@ -19,10 +19,17 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use("/api/hybridus", (req, res, next) => {
+  let soundFiles = fs.readdirSync(__dirname + "/../sounds/hybridus/");
+  res.status(200).json(soundFiles);
+});
+
+/*
 app.use(function (req, res, next) {
   res.writeHead(200, { "Content-Type": "text/html" });
   let readStream = fs.createReadStream(__dirname + "/../index.html");
   readStream.pipe(res);
-});
+  next();
+});*/
 
 module.exports = app;
