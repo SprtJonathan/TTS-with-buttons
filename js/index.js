@@ -78,23 +78,37 @@ function fetchData() {
 }
 
 function playAudio(phrase) {
-  for (i = 0; i < phrase.length; i++) {
+  let audioFiles = [];
+  for (j = 0; j < phrase.length; j++) {
+    audioFiles.push(soundsLocation + phrase[j].filename);
+  }
+
+  function playAudio(src) {
+    var audioElement = new Audio(src);
+    audioElement.play();
+    return audioElement
+  }
+  
+  // play audio
+  let index = 0
+  const audioElement = playAudio(audioFiles[index])
+  audioElement.addEventListener('ended', (e) => {
+    index++
+    if (index < audioFiles.length) {
+      audioElement.src = audioFiles[index]
+      audioElement.play();
+    }
+  })
+
+ /* for (i = 0; i < phrase.length; i) {
     console.log("playing " + phrase[i].filename);
-    let sound = new Audio(soundsLocation + phrase[i].filename);
+    let sound = new Audio(audioFiles[i]);
 
     let soundDuration;
     sound.addEventListener("loadeddata", function () {
       soundDuration = this.duration;
       console.log("Audio duration: " + this.duration);
-      sound.play();
-      wait(soundDuration)
-      task(soundDuration);
+      setTimeout(sound.play(), 200 * this.duration);
     });
-  }
-
-  function task(i) {
-    setTimeout(function () {
-      // Add tasks to do
-    }, 200 * i);
-  }
+  }*/
 }
